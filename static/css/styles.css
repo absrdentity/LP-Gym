@@ -1,0 +1,225 @@
+/* Hero Section */
+.hero-bg {
+  height: 100vh;
+  background: url('/static/images/background.png') center/cover no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.overlay {
+  position: relative;
+  z-index: 2;
+  animation: fadeUp 1.2s ease-out forwards;
+  opacity: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  animation: fadeUp 1.2s ease-out forwards;
+  opacity: 0;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.hero-title .red-accent {
+  color: #ff3b3b;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  margin-top: 10px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  z-index: 1;
+}
+
+.hero-bg .overlay {
+  background: rgba(0,0,0,0.45);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-bg .container {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Logo */
+.brand-text {
+  font-size: 1.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.highlight {
+  color: #16597b;
+}
+
+.logo-img {
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.2);
+  padding: 3px;
+}
+
+
+#navbar {
+  background: transparent;
+  transition: background-color 0.4s ease, padding 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+#navbar .nav-link {
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease;
+}
+
+
+#navbar .nav-link:hover,
+#navbar .nav-link.active {
+  color: #ff3b3b !important;
+}
+
+#navbar.scrolled {
+  background-color: #111;
+  padding: 0.6rem 0;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+}
+
+/* ABOUT US */
+.about-us-section {
+  background: #111;
+  color: #fff;
+}
+
+.about-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+
+.about-list {
+  list-style: none;
+  padding: 0;
+}
+
+.about-list li {
+  margin-bottom: 10px;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.about-list i {
+  color: #ff3b3b;
+  font-size: 1.3rem;
+}
+
+/* FEATURE SECTION */
+.features-section {
+  background: #111;
+  color: #fff;
+}
+
+.section-label {
+  font-size: 0.9rem;
+  letter-spacing: 5px;
+  color: #ff3b3b;
+  font-weight: 600;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.8;
+}
+
+.features-box {
+  background: #1a1a1a;
+  border-radius: 18px;
+  padding: 2rem 2.5rem;
+  max-width: 450px;
+  margin: 0 auto;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.features-box:hover {
+  transform: translateY(-8px);
+  box-shadow: 0px 12px 30px rgba(0,0,0,0.45);
+}
+
+.features-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.features-list li {
+  font-size: 1.1rem;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.features-list li:last-child {
+  border-bottom: none;
+}
+
+.features-list i {
+  color: #ff3b3b;
+  font-size: 1.3rem;
+}

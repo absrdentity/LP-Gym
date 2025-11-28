@@ -1,0 +1,109 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+
+<header id="site-header">
+  <nav id="navbar" class="navbar navbar-expand-lg navbar-dark fixed-top py-3">
+    <div class="container">
+
+      <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+        <span class="brand-text">
+          <span class="highlight">LP</span> <strong style="color: #d10927;">GYM</strong>
+        </span>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="/membership">Membership</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        </ul>
+
+        <a href="/join" class="btn btn-danger ms-lg-3 mt-3 mt-lg-0">Join Now</a>
+      </div>
+
+    </div>
+  </nav>
+</header>
+
+<div class="hero hero-bg mb-0">
+  <div class="overlay"></div>
+  <div class="hero-content text-center text-light">
+    <h1 class="hero-title">
+      <span class="red-accent">BE STRONGER</span> <br> BE BETTER
+    </h1>
+    <p class="hero-subtitle">Transform your body. Transform your life.</p>
+    <a href="/membership" class="btn btn-danger btn-lg mt-3 px-5 fw-bold">
+      JOIN NOW
+    </a>
+  </div>
+</div>
+
+<section class="about-us-section py-5">
+  <div class="container">
+
+    <div class="text-center mb-5">
+      <p class="section-label">ABOUT US</p>
+      <h2 class="section-title">Welcome to LP Gym</h2>
+      <p class="section-subtitle">
+        LP Gym isn’t just a place to work out — it’s a community built for growth, discipline, and real transformation.
+      </p>
+    </div>
+
+    <div class="row align-items-center">
+      
+      <div class="col-lg-6 mb-4">
+        <img src="/static/images/about.jpg" class="img-fluid rounded shadow-lg" alt="LP Gym">
+      </div>
+      <div class="col-lg-6">
+        <p class="about-text mb-4">
+          Founded with a passion for health and performance, LP Gym provides an environment where anyone from complete beginners to competitive athletes can thrive. Our facility is equipped with professional-grade strength machines, free weights, functional training stations, and cutting-edge cardio technology.
+        </p>
+        <p class="about-text mb-4">
+          Our trainers are certified experts specializing in fat loss, muscle building, conditioning, and athletic performance. Whether your goal is to lose weight, build strength, increase confidence, or improve overall health we guide you through every step with customized programs and accountability.
+        </p>
+
+        <p class="about-text mb-4">
+          At LP Gym, results matter but so does the journey. We believe in motivation, community, and consistency. Every member is treated like family, and every win big or small is celebrated.
+        </p>
+        <ul class="about-list mb-4">
+          <li><i class="fas fa-check-circle"></i> Modern equipment engineered for performance</li>
+          <li><i class="fas fa-check-circle"></i> Personalized training & coaching</li>
+          <li><i class="fas fa-check-circle"></i> Friendly and supportive environment</li>
+          <li><i class="fas fa-check-circle"></i> Results-driven programs backed by science</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="features-section py-5">
+  <div class="container text-center">
+    <p class="section-label mb-1">WHY CHOOSE US</p>
+    <h2 class="section-title mb-4">Our Features</h2>
+    <p class="section-subtitle mb-5">
+      Everything you need to transform — all in one place.
+    </p>
+    </div>
+    <div class="features-box shadow-lg">
+      <ul class="features-list">
+        <li><i class="fas fa-dumbbell"></i> State-of-the-Art Equipment</li>
+        <li><i class="fas fa-user-check"></i> Certified Personal Trainers</li>
+        <li><i class="fas fa-users"></i> Group Training Classes</li>
+        <li><i class="fas fa-apple-alt"></i> Nutrition Guidance</li>
+        <li><i class="fas fa-clock"></i> 24/7 Member Access</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock %}
