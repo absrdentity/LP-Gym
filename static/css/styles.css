@@ -223,3 +223,83 @@
   color: #ff3b3b;
   font-size: 1.3rem;
 }
+
+/* Pricing Card */
+.membership {
+  background: #111;
+  color: #fff;
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.pricing-card {
+  background: #1a1a1a;
+  padding: 2.2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.pricing-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+
+.featured {
+  border: 2px solid #ff3b3b;
+  transform: scale(1.05);
+}
+
+.badge-popular {
+  background: #ff3b3b;
+  color: #fff;
+  font-size: .60rem;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 6px;
+  position: absolute;
+  transform: translate(-50%, -20px);
+}
+
+.pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.pricing-features li {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ff3b3b;
+  margin-bottom: 15px;
+}
+
+.btn-join {
+  background: #ff3b3b;
+  color: #fff;
+  text-decoration: none;
+  padding: 12px 25px;
+  display: inline-block;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: .3s ease;
+}
+
+.btn-join:hover {
+  background: #cc3030;
+}
