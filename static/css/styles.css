@@ -2,6 +2,7 @@
 .hero-bg {
   height: 100vh;
   background: url('/static/images/background.png') center/cover no-repeat;
+  background-attachment: fixed; 
   position: relative;
   display: flex;
   align-items: center;
@@ -85,6 +86,13 @@
     transform: translateY(0);
   }
 }
+
+@media (max-width: 768px) {
+  .hero-bg {
+    background-attachment: scroll; /* fallback for mobile */
+  }
+}
+
 
 /* Logo */
 .brand-text {
