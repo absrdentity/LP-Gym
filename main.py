@@ -17,7 +17,7 @@ mysql = MySQL(app)
 def home():
     return render_template('index.html')
 
-@app.route('/register/<int:ID>', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     selected_package = request.args.get('package', '')
 

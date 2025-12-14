@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    <title>{{ name }} | LP Gym</title>
+{% endblock %}
+
+<section class="member-dashboard">
+    <div class="container">
+        <h1 class="text-center mb-4 fw-bold">Welcome, {{ name }}</h1>
+        <div class="card shadow-sm p-4">
+            <div class="row align-items-center">
+                <div class="col-sm-3 d-flex justify-content-center">
+                    <img src="{{ url_for('static', filename='profile.png') }}" 
+                    alt="Profile Pic"
+                    class="rounded-circle"
+                    style="width: 120px; height: 120px; object-fit: cover">
+                </div>
+                <div class="col-sm-9">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 text-start">
+                            <h3 class="mb-1">{{ name }}</h3>
+                            <p class="text-muted mb-2">{{ pakcage }} Member</p>
+                        </div>
+                        <div class="col-md-6 text-start">
+                            <div class="contact-info">
+                                <div class="mb-2">
+                                    <i class="bi bi-envelope"></i>
+                                    <span>{{ email }}</span>
+                                </div>
+                                <div>
+                                    <i class="bi bi-telephone"></i>
+                                    <span>{{ phone }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
