@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request, url_for, session, flash, redirect
 from flask_mysqldb import MySQL
-from datetime import datetime
+from datetime import datetime, timedelta
 import MySQLdb.cursors
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ app.secret_key  = '!@#$'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'lp-gym'
+app.config['MYSQL_DB'] = 'lpgym'
 
 mysql = MySQL(app)
 
@@ -29,23 +29,45 @@ def register():
         package = request.form['package']
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        
-        cursor.execute('SELECT * FROM members WHERE email = %s', (email,))
-        existing_user = cursor.fetchone()
 
-        if existing_user:
-            error_message = 'Email already registered. Please use another email or log in.'
-            return render_template('register.html', selected_package=selected_package, error=error_message)
+        # cek email
+        cursor.execute('SELECT id FROM members WHERE email=%s', (email,))
+        if cursor.fetchone():
+            return render_template(
+                'register.html',
+                selected_package=selected_package,
+                error='Email already registered'
+            )
 
-        cursor.execute(
-            'INSERT INTO members (name, email, password, phone, package, date) VALUES (%s, %s, %s, %s, %s, %s)',
-            (name, email, password, phone, package)
-        )
+        # membership dates
+        start_date = datetime.today().date()
+        expiry_date = start_date + timedelta(days=30)
+
+        cursor.execute("""
+            INSERT INTO members
+            (name, email, password, phone, package,
+             membership_start, membership_expiry, attendance_count)
+            VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+        """, (
+            name,
+            email,
+            password,
+            phone,
+            package,
+            start_date,
+            expiry_date,
+            0
+        ))
+
         mysql.connection.commit()
 
-        return redirect(url_for('dashboard.html', name=name, email=email, package=package, phone=phone))
-    
+        # ambil user_id yang baru dibuat
+        user_id = cursor.lastrowid
+        session['user_id'] = user_id
+        session.permanent = True
+
+        return redirect(url_for('dashboard'))
+
     return render_template('register.html', selected_package=selected_package)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -68,7 +90,7 @@ def login():
             error_message = 'Incorrect password. Please try again'
             return render_template('login.html', error=error_message)
         
-        session['member'] = member['ID']
+        session['user_id'] = member['id']
         session.permanent = True
         flash('Login Successful')
         return redirect(url_for('dashboard'))
@@ -77,7 +99,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('member', None)
+    session.pop('user_id', None)
     return redirect(url_for('home'))
 
 @app.route('/membership', methods=['GET'])
@@ -86,7 +108,7 @@ def membership():
 
 @app.route('/upgrade_membership', methods=['GET', 'POST'])
 def upgrade_membership(): 
-    if 'member' not in session:
+    if 'user_id' not in session:
         return redirect(url_for('login'))
     
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -108,6 +130,107 @@ def upgrade_membership():
         return redirect(url_for('dashboard'))
     
     return render_template('upgrade_membership.html', member=member)
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    cursor.execute("""
+        SELECT name, email, phone, package,
+               membership_expiry,
+               attendance_count
+        FROM members
+        WHERE id=%s
+    """, (session['user_id'],))
+
+    user = cursor.fetchone()
+    if not user:
+        session.pop('user_id')
+        return redirect(url_for('login'))
+
+    # Progress calculation
+    target = 12
+    progress = min(int((user['attendance_count'] / target) * 100), 100)
+
+    return render_template(
+        'dashboard.html',
+        user=user,
+        progress=progress
+    )
+
+
+@app.route('/checkin', methods=['POST'])
+def checkin():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    today = datetime.today().date()
+
+    # prevent double check-in
+    cursor.execute(
+        "SELECT * FROM attendance WHERE member_id=%s AND checkin_date=%s",
+        (session['user_id'], today)
+    )
+
+    if cursor.fetchone():
+        flash('You already checked in today!')
+        return redirect(url_for('dashboard'))
+
+    cursor.execute(
+        "INSERT INTO attendance (member_id, checkin_date) VALUES (%s,%s)",
+        (session['user_id'], today)
+    )
+
+    cursor.execute(
+        "UPDATE members SET attendance_count = attendance_count + 1 WHERE id=%s",
+        (session['user_id'],)
+    )
+
+    mysql.connection.commit()
+    flash('Check-in successful 💪')
+    return redirect(url_for('dashboard'))
+
+@app.route('/upgrade_membership', methods=['POST'])
+def extend_membership():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    cursor.execute("""
+        SELECT package, membership_expiry
+        FROM members
+        WHERE id=%s
+    """, (session['user_id'],))
+    user = cursor.fetchone()
+
+    if not user:
+        return redirect(url_for('login'))
+
+    today = datetime.today().date()
+    expiry = user['membership_expiry']
+    duration_days = PACKAGE_DURATION.get(user['package'].lower(), 30)
+
+    # logic inti
+    if expiry and expiry >= today:
+        new_expiry = expiry + timedelta(days=duration_days)
+    else:
+        new_expiry = today + timedelta(days=duration_days)
+
+    cursor.execute("""
+        UPDATE members
+        SET membership_expiry=%s
+        WHERE id=%s
+    """, (new_expiry, session['user_id']))
+
+    mysql.connection.commit()
+    flash('Membership extended successfully 🎉')
+
+    return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
     app.run(debug=True)
