@@ -1,0 +1,146 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<title>Extend Membership | LP Gym</title>
+{% endblock %}
+
+{% block body %}
+
+<style>
+  body {
+    background: #0b0b0b;
+  }
+
+  .page-content {
+    padding-top: 120px;
+    padding-bottom: 80px;
+  }
+
+  .extend-card {
+    max-width: 520px;
+    margin: auto;
+    background: #141414;
+    border-radius: 18px;
+    padding: 40px;
+    color: #fff;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+  }
+
+  .extend-card h2 {
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .extend-card p {
+    text-align: center;
+    color: #b5b5b5;
+    margin-bottom: 30px;
+  }
+
+  .info-box {
+    background: #1c1c1c;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid #2a2a2a;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+  }
+
+  .info-row span {
+    color: #aaa;
+  }
+
+  .info-row strong {
+    color: #fff;
+  }
+
+  .btn-extend {
+    background: linear-gradient(135deg, #ff3b3b, #d10927);
+    color: #fff;
+    border: none;
+    width: 100%;
+    padding: 15px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .btn-extend:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(255,59,59,0.35);
+  }
+
+  .back-link {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 0.9rem;
+  }
+
+  .back-link a {
+    color: #aaa;
+    text-decoration: none;
+  }
+
+  .back-link a:hover {
+    color: #ff3b3b;
+  }
+</style>
+
+<main class="page-content">
+  <div class="container">
+
+    <div class="extend-card">
+
+      <h2>Extend Membership</h2>
+      <p>Keep your progress going without interruption</p>
+
+      <!-- Membership Info -->
+      <div class="info-box">
+        <div class="info-row">
+          <span>Current Plan</span>
+          <strong class="text-uppercase">{{ user.package }}</strong>
+        </div>
+        <div class="info-row">
+          <span>Current Expiry</span>
+          <strong>{{ user.membership_expiry }}</strong>
+        </div>
+        <div class="info-row">
+          <span>Extension Duration</span>
+          <strong>
+            {% if user.package == 'basic' %}
+              +30 Days
+            {% elif user.package == 'premium' %}
+              +60 Days
+            {% elif user.package == 'elite' %}
+              +90 Days
+            {% endif %}
+          </strong>
+        </div>
+      </div>
+
+      <!-- Extend Form -->
+      <form method="POST" action="{{ url_for('extend_membership') }}">
+        <button type="submit" class="btn-extend">
+          Extend Membership
+        </button>
+      </form>
+
+      <div class="back-link">
+        <a href="{{ url_for('dashboard') }}">← Back to Dashboard</a>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+{% endblock %}

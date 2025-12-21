@@ -140,7 +140,7 @@
 
         <div class="col-md-3 text-center">
           <img
-            src="{{ url_for('static', filename='profile.png') }}"
+            src="{{ url_for('static', filename='images/profile.png') }}"
             class="rounded-circle profile-pic"
             alt="Profile"
           >
@@ -207,7 +207,7 @@
             {{ user.membership_expiry.strftime('%d %b %Y') if user.membership_expiry else 'N/A' }}
           </strong>
         </p>
-        <form action="/upgrade_membership" method="POST">
+        <a href="{{ url_for('extend_membership') }}">
           <button class="btn btn-outline-danger btn-sm mt-2">
             Extend Membership
           </button>

@@ -122,7 +122,7 @@
           <li><i class="fas fa-check-circle"></i> Basic fitness assessment</li>
           <li><i class="fas fa-check-circle"></i> Locker room access</li>
         </ul>
-        <a href="/join-basic" class="btn-join">Choose Plan</a>
+        <a href="{{ url_for('register', package='basic') }}" class="btn-join">Choose Plan</a>
       </div>
 
       <!-- Premium Plan -->
@@ -136,7 +136,7 @@
           <li><i class="fas fa-check-circle"></i> Group classes access</li>
           <li><i class="fas fa-check-circle"></i> Nutrition coaching</li>
         </ul>
-        <a href="/join-premium" class="btn-join">Choose Plan</a>
+        <a href="{{ url_for('register', package='premium') }}" class="btn-join">Choose Plan</a>
       </div>
 
       <!-- Elite Plan -->
@@ -149,7 +149,7 @@
           <li><i class="fas fa-check-circle"></i> Free supplements monthly</li>
           <li><i class="fas fa-check-circle"></i> Exclusive events access</li>
         </ul>
-        <a href="/join-elite" class="btn-join">Choose Plan</a>
+        <a href="{{ url_for('register', package='elite') }}" class="btn-join">Choose Plan</a>
       </div>
     </div>
   </div>

@@ -194,13 +194,12 @@ def checkin():
     flash('Check-in successful 💪')
     return redirect(url_for('dashboard'))
 
-@app.route('/upgrade_membership', methods=['POST'])
+@app.route('/extend_membership', methods=['GET', 'POST'])
 def extend_membership():
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-
     cursor.execute("""
         SELECT package, membership_expiry
         FROM members
@@ -208,29 +207,30 @@ def extend_membership():
     """, (session['user_id'],))
     user = cursor.fetchone()
 
-    if not user:
-        return redirect(url_for('login'))
+    if request.method == 'POST':
+        PACKAGE_DURATION = {
+            'basic': 30,
+            'premium': 60,
+            'elite': 90
+        }
 
-    today = datetime.today().date()
-    expiry = user['membership_expiry']
-    duration_days = PACKAGE_DURATION.get(user['package'].lower(), 30)
+        today = datetime.today().date()
+        expiry = user['membership_expiry']
+        duration = PACKAGE_DURATION.get(user['package'].lower(), 30)
 
-    # logic inti
-    if expiry and expiry >= today:
-        new_expiry = expiry + timedelta(days=duration_days)
-    else:
-        new_expiry = today + timedelta(days=duration_days)
+        new_expiry = expiry + timedelta(days=duration) if expiry and expiry >= today else today + timedelta(days=duration)
 
-    cursor.execute("""
-        UPDATE members
-        SET membership_expiry=%s
-        WHERE id=%s
-    """, (new_expiry, session['user_id']))
+        cursor.execute("""
+            UPDATE members
+            SET membership_expiry=%s
+            WHERE id=%s
+        """, (new_expiry, session['user_id']))
+        mysql.connection.commit()
 
-    mysql.connection.commit()
-    flash('Membership extended successfully 🎉')
+        flash('Membership extended successfully 🎉')
+        return redirect(url_for('dashboard'))
 
-    return redirect(url_for('dashboard'))
+    return render_template('extend_membership.html', user=user)
 
 if __name__ == '__main__':
     app.run(debug=True)

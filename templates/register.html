@@ -114,6 +114,15 @@
     font-size: 0.9rem;
     margin-bottom: 15px;
   }
+
+  select:disabled {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
+    cursor: not-allowed;
+  }
+
 </style>
 
 <main class="page-content">
@@ -150,10 +159,22 @@
                 <div class="form-group">
                     <label for="package">Choose Your Package</label>
                     <select name="package" id="package" required>
-                        <option value="">-- Choose Package --</option>
-                        <option value="basic" {% if selected_package == 'basic' %}selected{% endif %} >Basic Plan (Rp 300k /month)</option>
-                        <option value="premium" {% if selected_package == 'premium' %}selected{% endif %} >Premium Plan (Rp 500k /month)</option>
-                        <option value="elite" {% if selected_package == 'elite' %}selected{% endif %} >Elite Plan (Rp 900k /month)</option>
+                      <option value="">-- Choose Package --</option>
+
+                      <option value="basic"
+                        {% if selected_package == 'basic' %}selected{% endif %}>
+                        Basic Plan (Rp 300k /month)
+                      </option>
+
+                      <option value="premium"
+                        {% if selected_package == 'premium' %}selected{% endif %}>
+                        Premium Plan (Rp 500k /month)
+                      </option>
+
+                      <option value="elite"
+                        {% if selected_package == 'elite' %}selected{% endif %}>
+                        Elite Plan (Rp 900k /month)
+                      </option>
                     </select>
                 </div>
 
@@ -174,5 +195,15 @@
 
     </div>
 </main>
+
+{% block script %}
+
+  <script>
+    if ("{{ selected_package }}") {
+    document.getElementById("package").disabled = true;
+  }
+  </script>
+
+{% endblock %}
 
 {% endblock %}
